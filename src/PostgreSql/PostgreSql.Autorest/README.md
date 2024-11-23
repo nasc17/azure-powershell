@@ -3,9 +3,6 @@
 This directory contains the PowerShell module for the PostgreSql service.
 
 ---
-## Status
-[![Az.PostgreSql](https://img.shields.io/powershellgallery/v/Az.PostgreSql.svg?style=flat-square&label=Az.PostgreSql "Az.PostgreSql")](https://www.powershellgallery.com/packages/Az.PostgreSql/)
-
 ## Info
 - Modifiable: yes
 - Generated: all
@@ -17,7 +14,7 @@ This directory contains the PowerShell module for the PostgreSql service.
 This module was primarily generated via [AutoRest](https://github.com/Azure/autorest) using the [PowerShell](https://github.com/Azure/autorest.powershell) extension.
 
 ## Module Requirements
-- [Az.Accounts module](https://www.powershellgallery.com/packages/Az.Accounts/), version 2.2.3 or greater
+- [Az.Accounts module](https://www.powershellgallery.com/packages/Az.Accounts/), version 2.7.5 or greater
 
 ## Authentication
 AutoRest does not generate authentication code for the module. Authentication is handled via Az.Accounts by altering the HTTP payload before it is sent.
@@ -47,14 +44,31 @@ In this directory, run AutoRest:
 > see https://aka.ms/autorest
 
 ``` yaml
-commit: d241e05b224891ddc0147544213d8edccf53f7d9
+commit: 51cdc876974de35d1815df071fb77537d159505c
 require:
   - $(this-folder)/../../readme.azure.noprofile.md
+  - https://github.com/Azure/azure-rest-api-specs/blob/51cdc876974de35d1815df071fb77537d159505c/specification/postgresql/resource-manager/readme.md
 input-file:
-  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/postgresql.json
-  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2017-12-01/ServerSecurityAlertPolicies.json
-  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/postgresql.json
-  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/Databases.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Administrators.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Backups.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Capabilities.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/CheckNameAvailability.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Configuration.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Databases.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/FirewallRules.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/FlexibleServers.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/LongTermRetentionOperation.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Migrations.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Operations.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/PrivateDnsZone.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/PrivateEndpointConnections.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/PrivateLinkResources.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/Replicas.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/ServerLogs.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/ServerStartStopRestart.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/ThreatProtection.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/VirtualEndpoints.json
+  - $(repo)/specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/VirtualNetwork.json
 module-version: 0.1.0
 title: PostgreSQL 
 subject-prefix: 'PostgreSQL'
@@ -69,28 +83,34 @@ directive:
     transform: return $.replace(/^CheckNameAvailability_Execute$/g, "NameAvailability_Test")
   - from: swagger-document
     where: $.paths..operationId
-    transform: return $.replace(/^LocationBasedCapabilities_Execute$/g, "LocationBasedCapabilities_Get")
+    transform: return $.replace(/^CheckNameAvailabilityWithLocation_Execute$/g, "NameAvailabilityLocation_Test")
   - from: swagger-document
     where: $.paths..operationId
-    transform: return $.replace(/^ServerParameters_ListUpdateConfigurations$/g, "ConfigurationsList_Update")
-  - from: Microsoft.DBforPostgreSQL/stable/2017-12-01/postgresql.json
-    where: $.definitions.VirtualNetworkRule
-    transform: $['required'] = ['properties']
-  - from: Microsoft.DBforPostgreSQL/stable/2021-06-01/postgresql.json
+    transform: return $.replace(/^CheckMigrationNameAvailability$/g, "MigrationNameAvailability_Test")
+  - from: swagger-document
     where: $.paths..operationId
-    transform: return $.replace(/^(Servers|ServerKeys)_/g, "flexible$1_")
-  - from: Microsoft.DBforPostgreSQL/stable/2021-06-01/postgresql.json
+    transform: return $.replace(/^FlexibleServer_TriggerLtrPreBackup$/g, "flexibleServerLtrPreTriggerBackup_Test")
+  - from: swagger-document
     where: $.paths..operationId
-    transform: return $.replace(/^(FirewallRules|Configurations|NameAvailabilities|LocationBasedCapabilities)_/g, "flexibleServer$1_")
-  - from: Microsoft.DBforPostgreSQL/stable/2021-06-01/Databases.json
+    transform: return $.replace(/^FlexibleServer_StartLtrBackup$/g, "flexibleServerLtrTriggerBackup_Start")
+  - from: swagger-document
     where: $.paths..operationId
-    transform: return $.replace(/^(Databases)_/g, "flexibleServer$1_")
-  - from: Microsoft.DBforPostgreSQL/stable/2021-06-01/postgresql.json
+    transform: return $.replace(/^LocationBasedCapabilities_Execute$/g, "LocationBasedCapabilities_Get")
+  - from: Microsoft.DBforPostgreSQL/stable/2024-08-01/FlexibleServers.json
+    where: $.paths..operationId
+    transform: return $.replace(/^(Servers)_/g, "flexible$1_")
+  - from: swagger-document
+    where: $.paths..operationId
+    transform: return $.replace(/^(Backups|Configurations|Databases|FirewallRules|ltrBackupOperations|Migrations|Operations)_/g, "flexibleServer$1_")
+  - from: swagger-document
+    where: $.paths..operationId
+    transform: return $.replace(/^(PrivateEndpointConnections|PrivateLinkResources|Replicas|LogFiles|ServerThreatProtectionSettings|VirtualEndpoints)_/g, "flexibleServer$1_")
+  - from: Microsoft.DBforPostgreSQL/stable/stable/2024-08-01/VirtualNetwork.json
     where: $.paths..operationId
     transform: return $.replace(/^VirtualNetworkSubnetUsage_Execute$/g,"flexibleServerVirtualNetworkSubnetUsage_Get")
-  - from: Microsoft.DBforPostgreSQL/stable/2021-06-01/Databases.json
+  - from: Microsoft.DBforPostgreSQL/stable/stable/2024-08-01/PrivateDnsZone.json
     where: $.paths..operationId
-    transform: return $.replace(/^(Databases)_/g, "flexibleServer$1_")
+    transform: return $.replace(/^GetPrivateDnsZoneSuffix_Execute$/g,"flexibleServerPrivateDnsZoneSuffix_Get")
   - from: Microsoft.DBforPostgreSQL/stable/2021-06-01/postgresql.json
     where: 
       verb: Restore$
@@ -216,11 +236,29 @@ directive:
       parameter-name: Name
       alias: FirewallRuleName
   - where:
-      subject: ^FlexibleServerDatabase$
+      subject: ^FlexibleServerDatabases$
       parameter-name: DatabaseName
     set:
       parameter-name: Name
       alias: DatabaseName
+  - where:
+      subject: ^FlexibleServerBackups$
+      parameter-name: BackupName
+    set:
+      parameter-name: Name
+      alias: BackupName
+  - where:
+      subject: ^FlexibleServerltrBackupOperations$
+      parameter-name: BackupName
+    set:
+      parameter-name: Name
+      alias: BackupName
+  - where:
+      subject: ^FlexibleServerMigrations$
+      parameter-name: MigrationName
+    set:
+      parameter-name: Name
+      alias: MigrationName
   - where:
       subject: ^FlexibleServerConfiguration$
       parameter-name: ConfigurationName
@@ -228,17 +266,18 @@ directive:
       parameter-name: Name
       alias: ConfigurationName
   - where:
-      parameter-name: StorageProfileBackupRetentionDay
-      subject: Server
+      subject: ^FlexibleServerVirtualEndpoints$
+      parameter-name: VirtualEndpointName
     set:
-      parameter-description: Backup retention days for the server. Day count is between 7 and 35.
+      parameter-name: Name
+      alias: VirtualEndpointName
+  - where:
+      subject: ^FlexibleServerServerThreatProtectionSettings$
+      parameter-name: ThreatProtectionName
+    set:
+      parameter-name: Name
+      alias: ThreatProtectionName
   - from: source-file-csharp
     where: $
     transform: $ = $.replace(/OperationOrigin System/, 'OperationOrigin System1');
-  - from: source-file-csharp
-    where: $
-    transform: $ = $.replace('internal Microsoft.Azure.PowerShell.Cmdlets.PostgreSql.Models.Api20171201.IServerPropertiesForCreate Property', 'public Microsoft.Azure.PowerShell.Cmdlets.PostgreSql.Models.Api20171201.IServerPropertiesForCreate Property');
-  - from: source-file-csharp
-    where: $
-    transform: $ = $.replace('public int StorageProfileBackupRetentionDay', '[System.Management.Automation.ValidateRangeAttribute(7,35)]\n        public int StorageProfileBackupRetentionDay');
 ```
